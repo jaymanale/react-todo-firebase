@@ -45,10 +45,11 @@ class Login extends React.Component {
     return (
       <div className="row h-100">
         <div className="col-sm-12 col-md-6">
-          <img src={todo} alt="todo Task" />
+          <img src={todo} className="img-fluid" alt="todo Task" />
         </div>
-        <div className="col-sm-12 col-md-6 mt-auto mb-auto">
+        <div className="col-sm-12 col-md-6 mt-auto mb-auto text-center">
           <form>
+            <h1>Todo App</h1>
             <div className="form-group">
               <input
                 type="email"
@@ -69,12 +70,12 @@ class Login extends React.Component {
                 onChange={this.handleChange}
               />
             </div>
-            <div className="row">
+            <div className="row m-auto">
               <div className="col-sm-12 col-md-6">
                 <button
                   type="submit"
                   onClick={this.signUp}
-                  className="btn btn-secondary btn-block m-auto"
+                  className="btn btn-secondary btn-block mt-2"
                 >
                   Sign Up
                 </button>
@@ -83,7 +84,7 @@ class Login extends React.Component {
                 <button
                   type="submit"
                   onClick={this.signIn}
-                  className="btn btn-primary btn-block m-auto"
+                  className="btn btn-primary btn-block mt-2"
                 >
                   Sign In
                 </button>

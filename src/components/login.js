@@ -1,5 +1,6 @@
 import React from 'react';
 import Fire from './../config/fire';
+import todo from './../resource/todo.gif';
 
 class Login extends React.Component {
   constructor(props) {
@@ -43,7 +44,10 @@ class Login extends React.Component {
   loginForm = () => {
     return (
       <div className="row h-100">
-        <div className="col-md-6 mt-auto mb-auto">
+        <div className="col-sm-12 col-md-6">
+          <img src={todo} alt="todo Task" />
+        </div>
+        <div className="col-sm-12 col-md-6 mt-auto mb-auto">
           <form>
             <div className="form-group">
               <input
@@ -90,7 +94,6 @@ class Login extends React.Component {
             )}
           </form>
         </div>
-        <div className="col-md-6">logo goes here</div>
       </div>
     );
   };

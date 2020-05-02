@@ -23,17 +23,30 @@ class Home extends React.Component {
 
   addTask = (event) => {
     event.preventDefault();
-    const { task, allTask } = this.state;
-    const tasks = [...allTask, task];
+    const { id, task, allTask } = this.state;
+
+    let tasks = [];
+    tasks = allTask.length ? [...allTask] : [];
+
+    const newTask = {
+      taskName: task,
+      id: tasks.length++,
+    };
+    console.log('new', newTask);
+    tasks.push(newTask);
+
+    console.log('ALl', tasks);
     this.setState({ allTask: tasks });
   };
 
   render() {
+    const { id, allTask } = this.state;
+
     return (
       <div className="container text-center m-auto">
         <div>
           <span className="display-4">Todo App</span>
-          <button className="float-right" onClick={this.logout}>
+          <button className="float-right btn btn-danger" onClick={this.logout}>
             Logout
           </button>
         </div>
@@ -56,6 +69,8 @@ class Home extends React.Component {
             Add Task
           </button>
         </form>
+        {allTask.length &&
+          allTask.map((task) => <li key={task.id}>{task.taskName}</li>)}
       </div>
     );
   }

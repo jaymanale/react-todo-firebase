@@ -7,6 +7,7 @@ class Login extends React.Component {
     this.state = {
       email: '',
       password: '',
+      error: '',
     };
   }
 
@@ -18,13 +19,13 @@ class Login extends React.Component {
   signUp = (event) => {
     event.preventDefault();
 
-    const { email, password } = this.state;
+    const { email, password, error } = this.state;
     Fire.auth()
       .createUserWithEmailAndPassword(email, password)
       .then((user) => {
         console.log('SignUp User :', user);
       })
-      .catch((e) => console.log('Sign Up Error:', e));
+      .catch((e) => this.setState({ error: e.message }));
   };
 
   signIn = (event) => {
@@ -36,22 +37,66 @@ class Login extends React.Component {
       .then((user) => {
         console.log('sign In User', user);
       })
-      .catch((e) => console.log('Error in SignIn', e));
+      .catch((e) => this.setState({ error: e.message }));
+  };
+
+  loginForm = () => {
+    return (
+      <div className="row h-100">
+        <div className="col-md-6 mt-auto mb-auto">
+          <form>
+            <div className="form-group">
+              <input
+                type="email"
+                name="email"
+                className="form-control"
+                id="email"
+                placeholder="Enter email"
+                onChange={this.handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="password"
+                name="password"
+                className="form-control"
+                id="password"
+                placeholder="Enter password"
+                onChange={this.handleChange}
+              />
+            </div>
+            <div className="row">
+              <div className="col-sm-12 col-md-6">
+                <button
+                  type="submit"
+                  onClick={this.signUp}
+                  className="btn btn-secondary btn-block m-auto"
+                >
+                  Sign Up
+                </button>
+              </div>
+              <div className="col-sm-12 col-md-6">
+                <button
+                  type="submit"
+                  onClick={this.signIn}
+                  className="btn btn-primary btn-block m-auto"
+                >
+                  Sign In
+                </button>
+              </div>
+            </div>
+            {this.state.error && (
+              <p className="text-center text-danger mt-1">{this.state.error}</p>
+            )}
+          </form>
+        </div>
+        <div className="col-md-6">logo goes here</div>
+      </div>
+    );
   };
 
   render() {
-    return (
-      <form>
-        <input type="email" name="email" onChange={this.handleChange} />
-        <input type="password" name="password" onChange={this.handleChange} />
-        <button type="submit" onClick={this.signUp}>
-          Sign Up
-        </button>
-        <button type="submit" onClick={this.signIn}>
-          Sign In
-        </button>
-      </form>
-    );
+    return this.loginForm();
   }
 }
 

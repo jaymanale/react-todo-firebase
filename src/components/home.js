@@ -66,15 +66,13 @@ class Home extends React.Component {
 
   generateNavBar = () => {
     return (
-      <nav className="navbar navbar-primary bg-light mb-4">
-        <a className="navbar-brand" href="#">
+      <nav className="navbar-fluid navbar-primary bg-light mb-4">
+        <span className="navbar-brand p-2">
           <img src={icon} width="40" height="40" alt="todo icon" />
-        </a>
-        <a className="navbar-brand font-weight-bold text-center" href="#!">
-          Todo App
-        </a>
+        </span>
+        <span className="navbar-brand font-weight-bold ml-1">Todo App</span>
         <button
-          className="btn btn-outline-danger my-2 my-sm-0"
+          className="btn btn-outline-danger float-right mt-2 mr-2"
           onClick={this.logout}
         >
           Logout
@@ -135,7 +133,7 @@ class Home extends React.Component {
   render() {
     const { loading, allTask } = this.state;
     return (
-      <div className="container m-auto">
+      <div className="container">
         {this.generateNavBar()}
         {this.generateTodoForm()}
         {loading ? <Loader /> : this.generateTodoListItems()}

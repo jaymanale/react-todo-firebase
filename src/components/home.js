@@ -18,6 +18,9 @@ class Home extends React.Component {
     };
   }
 
+  scrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
   getUser = () => {
     let userMail = localStorage.getItem('email');
     return userMail.substring(0, userMail.indexOf('@'));
@@ -50,6 +53,7 @@ class Home extends React.Component {
       });
   };
   updateTask = (item) => {
+    this.scrollToTop();
     this.setState({ id: item.id, task: item.task, edit: true });
   };
 
@@ -128,7 +132,7 @@ class Home extends React.Component {
         <span className="navbar-brand p-2">
           <img src={icon} width="40" height="40" alt="todo icon" />
         </span>
-        <span className=" ml-1">Todo</span>
+        <span className="font-weight-bold ml-1">Todo</span>
         <img
           src={logoutIcon}
           alt="logout"
@@ -213,7 +217,7 @@ class Home extends React.Component {
                     <img
                       src={deleteIcon}
                       alt="delete"
-                      className=" ml-3 p-2"
+                      className=" ml-5 p-2"
                       width="40"
                       height="40"
                       onClick={() => this.removeTask(item.id)}

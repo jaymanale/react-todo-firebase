@@ -1,14 +1,16 @@
 import React from 'react';
 import Fire from './../config/fire';
 import todo from './../resource/todo.gif';
+import Loader from './loader';
 
 class Login extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       email: '',
       password: '',
       error: '',
+      loading: false,
     };
   }
 
@@ -19,32 +21,35 @@ class Login extends React.Component {
 
   signUp = (event) => {
     event.preventDefault();
+    this.setState({ loading: true });
 
     const { email, password, error } = this.state;
     Fire.auth()
       .createUserWithEmailAndPassword(email, password)
       .then((user) => {
         console.log('SignUp User :', user);
+        this.setState({ loading: false });
       })
-      .catch((e) => this.setState({ error: e.message }));
+      .catch((e) => this.setState({ error: e.message, loading: false }));
   };
 
   signIn = (event) => {
     event.preventDefault();
-
+    this.setState({ loading: true });
     const { email, password } = this.state;
     Fire.auth()
       .signInWithEmailAndPassword(email, password)
       .then((user) => {
         console.log('sign In User', user);
+        this.setState({ loading: true });
       })
-      .catch((e) => this.setState({ error: e.message }));
+      .catch((e) => this.setState({ error: e.message, loading: false }));
   };
 
   loginForm = () => {
     return (
       <div className="row h-100">
-        <div className="col-sm-12 col-md-6">
+        <div className="col-sm-12 col-md-6 mt-auto mb-auto">
           <img src={todo} className="img-fluid" alt="todo Task" />
         </div>
         <div className="col-sm-12 col-md-6 mt-auto mb-auto text-center">
@@ -100,6 +105,10 @@ class Login extends React.Component {
   };
 
   render() {
+    if (this.state.loading) {
+      return <Loader />;
+    }
+
     return this.loginForm();
   }
 }

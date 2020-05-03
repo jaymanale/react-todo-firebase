@@ -5,11 +5,10 @@ import Login from './components/login';
 import Home from './components/home';
 
 class App extends React.Component {
-  constructor(props) {
-    console.log('constructor props:', props);
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      user: {},
+      user: localStorage.getItem('user'),
     };
   }
 
@@ -19,13 +18,15 @@ class App extends React.Component {
 
   authListener() {
     Fire.auth().onAuthStateChanged((user) => {
-      console.log(user);
+      console.log('User', user);
       if (user) {
-        this.setState({ user });
         localStorage.setItem('user', user.uid);
+        localStorage.setItem('email', user.email);
+        this.setState({ user });
       } else {
-        this.setState({ user: null });
         localStorage.removeItem('user');
+        localStorage.removeItem('email');
+        this.setState({ user: null });
       }
     });
   }
@@ -33,9 +34,7 @@ class App extends React.Component {
   render() {
     const { user } = this.state;
     return (
-      <div className="container">
-        {this.state.user ? <Home user={user} /> : <Login />}
-      </div>
+      <div className="container">{this.state.user ? <Home /> : <Login />}</div>
     );
   }
 }

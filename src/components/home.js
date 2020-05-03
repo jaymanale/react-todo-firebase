@@ -2,6 +2,9 @@ import React from 'react';
 import Fire from './../config/fire';
 import icon from './../resource/icon2.png';
 import Loader from './loader';
+import logoutIcon from './../resource/logout.png';
+import editIcon from './../resource/edit2.png';
+import deleteIcon from './../resource/delete.png';
 
 class Home extends React.Component {
   constructor() {
@@ -125,13 +128,21 @@ class Home extends React.Component {
         <span className="navbar-brand p-2">
           <img src={icon} width="40" height="40" alt="todo icon" />
         </span>
-        <span className="font-weight-bold ml-1">Todo App</span>
-        <button
+        <span className=" ml-1">Todo</span>
+        <img
+          src={logoutIcon}
+          alt="logout"
+          className="link float-right m-2"
+          width="40"
+          height="40"
+          onClick={this.logout}
+        />
+        {/* <button
           className="btn btn-outline-danger float-right mt-2 mr-md-3"
           onClick={this.logout}
         >
           Logout
-        </button>
+        </button> */}
       </nav>
     );
   };
@@ -186,17 +197,29 @@ class Home extends React.Component {
           <ul className="list-group">
             {allTask &&
               allTask.map((item) => (
-                <li key={item.id} className="list-group-item">
-                  {item.task}
-                  <span className="float-right">
-                    <a className="btn" onClick={() => this.updateTask(item)}>
-                      Edit
-                    </a>
-                    <a className="btn" onClick={() => this.removeTask(item.id)}>
-                      Delete
-                    </a>
-                  </span>
-                </li>
+                <div key={item.id} className="card border-primary   mb-3 w-100">
+                  <div className="card-body text-dark">
+                    <p className="card-text">{item.task}</p>
+                  </div>
+                  <div className="card-footer">
+                    <img
+                      src={editIcon}
+                      alt="edit"
+                      className=" p-2"
+                      width="40"
+                      height="40"
+                      onClick={() => this.updateTask(item)}
+                    />
+                    <img
+                      src={deleteIcon}
+                      alt="delete"
+                      className=" ml-3 p-2"
+                      width="40"
+                      height="40"
+                      onClick={() => this.removeTask(item.id)}
+                    />
+                  </div>
+                </div>
               ))}
           </ul>
         </div>

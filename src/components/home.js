@@ -42,7 +42,9 @@ class Home extends React.Component {
         status: 'ACT',
       })
       .then((user) => this.getUserTask())
-      .catch();
+      .catch((e) => {
+        console.log('Error in Add:', e);
+      });
   };
   updateTask = (item) => {
     this.setState({ id: item.id, task: item.task, edit: true });
@@ -123,9 +125,9 @@ class Home extends React.Component {
         <span className="navbar-brand p-2">
           <img src={icon} width="40" height="40" alt="todo icon" />
         </span>
-        <span className="navbar-brand font-weight-bold ml-1">Todo App</span>
+        <span className="font-weight-bold ml-1">Todo App</span>
         <button
-          className="btn btn-outline-danger float-right mt-2 mr-2"
+          className="btn btn-outline-danger float-right mt-2 mr-md-3"
           onClick={this.logout}
         >
           Logout
@@ -176,36 +178,6 @@ class Home extends React.Component {
     );
   };
 
-  // generateTodoEditForm = () => {
-  //   return (
-  //     <div className="row">
-  //       <form className="w-100 form-inline">
-  //         <div className="col-sm-12 col-md-8">
-  //           <div className="form-group">
-  //             <input
-  //               type="text"
-  //               name="task"
-  //               className="form-control w-100"
-  //               id="task"
-  //               value={this.state.task}
-  //               placeholder="Update task"
-  //               onChange={this.handleChange}
-  //             />
-  //           </div>
-  //         </div>
-  //         <div className=" col-sm-12 col-md-4 ">
-  //           <button
-  //             type="submit"
-  //             onClick={() => this.updateTask(id)}
-  //             className="btn btn-primary btn-block"
-  //           >
-  //             Add Task
-  //           </button>
-  //         </div>
-  //       </form>
-  //     </div>
-  //   );
-  // };
   generateTodoListItems = () => {
     const { allTask } = this.state;
     return (

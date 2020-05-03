@@ -8,7 +8,9 @@ class Home extends React.Component {
     super();
     this.state = {
       task: '',
+      id: null,
       loading: true,
+      edit: false,
       allTask: [],
     };
   }
@@ -42,6 +44,52 @@ class Home extends React.Component {
       .then((user) => this.getUserTask())
       .catch();
   };
+  updateTask = (item) => {
+    this.setState({ id: item.id, task: item.task, edit: true });
+  };
+
+  saveUpdateTask = (event) => {
+    event.preventDefault();
+    const { id, task, allTask } = this.state;
+    console.log('ID', id);
+    const originalTasks = [...allTask];
+    console.log('all', originalTasks);
+    const taskId = id;
+    const taskName = task;
+
+    const updateTask = originalTasks.filter((item) => item.id != id);
+    updateTask.unshift({ task: task, id: id, status: 'ACT' });
+    this.setState({ allTask: updateTask, task: '', edit: false, id: null });
+
+    Fire.database()
+      .ref('todo/')
+      .child(this.getUser())
+      .child(taskId)
+      .set({
+        task: taskName,
+        status: 'ACT',
+      })
+      .then((update) => {
+        console.log('update:', update);
+        //        this.getUserTask();
+      })
+      .catch((e) => {
+        console.log('error in update', e);
+        this.setState({ allTask: originalTasks });
+      });
+  };
+  removeTask = (id) => {
+    Fire.database()
+      .ref('todo/')
+      .child(this.getUser())
+      .child(id)
+      .remove()
+      .then((user) => {
+        console.log('Delete:', user);
+        this.getUserTask();
+      })
+      .catch((e) => console.log('Delete error', e));
+  };
 
   getUserTask = () => {
     let tasks = [];
@@ -54,7 +102,12 @@ class Home extends React.Component {
         snapshot.forEach((item) => {
           tasks.push({ id: item.key, ...item.val() });
         });
-        this.setState({ allTask: tasks, task: '', loading: false });
+        this.setState({
+          allTask: tasks,
+          task: '',
+          loading: false,
+          edit: false,
+        });
       })
       .catch((e) => console.log('fetch data error:', e));
   };
@@ -81,7 +134,8 @@ class Home extends React.Component {
     );
   };
 
-  generateTodoForm = () => {
+  generateTodoAddForm = () => {
+    const { edit } = this.state;
     return (
       <div className="row">
         <form className="w-100 form-inline">
@@ -99,19 +153,59 @@ class Home extends React.Component {
             </div>
           </div>
           <div className=" col-sm-12 col-md-4 ">
-            <button
-              type="submit"
-              onClick={this.addTask}
-              className="btn btn-primary btn-block"
-            >
-              Add Task
-            </button>
+            {edit ? (
+              <button
+                type="submit"
+                onClick={this.saveUpdateTask}
+                className="btn btn-primary btn-block"
+              >
+                Update Task
+              </button>
+            ) : (
+              <button
+                type="submit"
+                onClick={this.addTask}
+                className="btn btn-primary btn-block"
+              >
+                Add Task
+              </button>
+            )}
           </div>
         </form>
       </div>
     );
   };
 
+  // generateTodoEditForm = () => {
+  //   return (
+  //     <div className="row">
+  //       <form className="w-100 form-inline">
+  //         <div className="col-sm-12 col-md-8">
+  //           <div className="form-group">
+  //             <input
+  //               type="text"
+  //               name="task"
+  //               className="form-control w-100"
+  //               id="task"
+  //               value={this.state.task}
+  //               placeholder="Update task"
+  //               onChange={this.handleChange}
+  //             />
+  //           </div>
+  //         </div>
+  //         <div className=" col-sm-12 col-md-4 ">
+  //           <button
+  //             type="submit"
+  //             onClick={() => this.updateTask(id)}
+  //             className="btn btn-primary btn-block"
+  //           >
+  //             Add Task
+  //           </button>
+  //         </div>
+  //       </form>
+  //     </div>
+  //   );
+  // };
   generateTodoListItems = () => {
     const { allTask } = this.state;
     return (
@@ -122,6 +216,14 @@ class Home extends React.Component {
               allTask.map((item) => (
                 <li key={item.id} className="list-group-item">
                   {item.task}
+                  <span className="float-right">
+                    <a className="btn" onClick={() => this.updateTask(item)}>
+                      Edit
+                    </a>
+                    <a className="btn" onClick={() => this.removeTask(item.id)}>
+                      Delete
+                    </a>
+                  </span>
                 </li>
               ))}
           </ul>
@@ -131,11 +233,11 @@ class Home extends React.Component {
   };
 
   render() {
-    const { loading, allTask } = this.state;
+    const { loading, allTask, edit } = this.state;
     return (
       <div className="container">
         {this.generateNavBar()}
-        {this.generateTodoForm()}
+        {this.generateTodoAddForm()}
         {loading ? <Loader /> : this.generateTodoListItems()}
       </div>
     );

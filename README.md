@@ -36,8 +36,11 @@ npm test
 - Website: www.jayrammanale.com
 - Twitter: [@JayManale](https://twitter.com/JayManale)
 - Github: [@jaymanale](https://github.com/jaymanale)
-- LinkedIn: [@jayram-manale](https://linkedin.com/in/jayram-manale)
+- LinkedIn: [@jaymanale](https://linkedin.com/in/jayram-manale)
 
 ## Show your support
 
 Give a ⭐️ if this project helped you!
+
+***	
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
